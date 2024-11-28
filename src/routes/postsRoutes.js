@@ -1,6 +1,7 @@
 import express from "express"
 import multer from "multer";
-import { listarPosts,postarNovoPost,uploadImagem } from "../controllers/postsController.js";
+import { listarPosts,postarNovoPost,uploadImagem,atualizaNovoPost } from "../controllers/postsController.js";
+import { atualizarPost } from "../models/postModels.js";
 
 
 const storage = multer.diskStorage({
@@ -15,13 +16,14 @@ const storage = multer.diskStorage({
 const upload = multer({ dest: "./uploads" , storage})
 
 const routes = (app) => {
-    // comando redundante? uma vez que já informei isso no server.js... 
-   // app.use(express.json());
+    app.use(express.json());
 
 
 app.get("/posts",listarPosts);
 app.post("/posts",postarNovoPost);
 app.post("/upload",upload.single("imagem"),uploadImagem);
+app.put("/upload/:id", atualizaNovoPost);
+
 }
 
 export default routes;

@@ -1,5 +1,5 @@
 import fs from "fs"
-import {getTodosPosts,criarPost} from "../models/postModels.js"
+import {getTodosPosts,criarPost, atualizarPost} from "../models/postModels.js"
 
 // modelo de resposta 
 
@@ -46,3 +46,21 @@ export async function postarNovoPost(req,res) {
         }
     
     }    
+
+    export async function atualizaNovoPost(req,res) {
+
+        const id = req.params.id;
+        const urlImagem = `http://localhost:3000/${id}.jpeg`;
+        const post = {
+               imgUrl: urlImagem,
+               descricao: req.body.descricao,
+               alt: req.body.alt 
+        }
+        try {
+            const postCriado = await atualizarPost(id,post);
+            res.status(200).json(postCriado);
+        } catch(erro) {
+            console.error(erro.message);
+            res.status(500).json({"ERRO:":"Falha na requisição"});
+        }
+    }  
